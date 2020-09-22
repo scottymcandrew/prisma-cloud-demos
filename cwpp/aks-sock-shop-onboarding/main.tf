@@ -22,7 +22,7 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   resource_group_name = azurerm_resource_group.rg_aks.name
 
   default_node_pool {
-    name = "aks-pool"
+    name = "akspool1"
     vm_size = "Standard_D2_v2"
     node_count = 1
   }
