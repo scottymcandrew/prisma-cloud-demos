@@ -17,9 +17,9 @@ resource "azurerm_resource_group" "rg_aks" {
 
 resource "azurerm_kubernetes_cluster" "aks-cluster" {
   dns_prefix = "aks-sock-shop-demo"
-  location = azurerm_kubernetes_cluster
+  location = azurerm_resource_group.rg_aks.location
   name = "aks-sock-shop-demo"
-  resource_group_name = azurerm_resource_group
+  resource_group_name = azurerm_resource_group.rg_aks.name
 
   default_node_pool {
     name = "aks-pool"
