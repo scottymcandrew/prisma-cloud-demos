@@ -32,6 +32,28 @@ resource "azurerm_kubernetes_cluster" "aks-cluster" {
   tags = {
     Environment = "Lab"
   }
+  # Connect kubectl to local shell
+  provisioner "local-exec" {
+    command = "az aks get-credentials --resource-group ${azurerm_resource_group.rg_aks.name} --name ${azurerm_kubernetes_cluster.aks-cluster.name} --overwrite-existing"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl create ns twistlock"
+  }
+  provisioner "local-exec" {
+    command = "kubectl create ns sock-shop"
+  }
+
+  provisioner "local-exec" {
+    # MacOS
+    command = "./pcc_defender_install_mac.sh"
+  }
+
+  # Deploy sock-shop
+  provisioner "local-exec" {
+    command = "kubectl apply -f ./complete-demo.yaml"
+  }
+
 }
 
 output "client_certificate" {
@@ -41,3 +63,5 @@ output "client_certificate" {
 output "kube_config" {
   value = azurerm_kubernetes_cluster.aks-cluster.kube_config_raw
 }
+
+
