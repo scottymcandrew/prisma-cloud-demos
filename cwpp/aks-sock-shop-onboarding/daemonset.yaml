@@ -1,0 +1,185 @@
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: twistlock-view
+rules:
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"] # Allow Defenders to list RBAC resources
+  verbs: ["list"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "replicasets"] # Allow Defenders to get Deployments and ReplicaSets
+  verbs: ["get"]
+- apiGroups: [""] # Core API
+  resources: ["namespaces", "pods"] # Allow Defenders to get Namespaces and Pods
+  verbs: ["get"]
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: twistlock-view-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: twistlock-view
+subjects:
+- apiGroup:
+  kind: ServiceAccount
+  name: twistlock-service
+  namespace: twistlock
+---
+
+---
+
+---
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: twistlock-secrets
+  namespace: twistlock
+type: Opaque
+data:
+  service-parameter: cUI5SmpjRHYzb2Frd0lqazRzL3FtVHkydHpvMmxvNldxU1NsSmNmU2RkcXRQMDNlZVZESTNnWEt1d0JBV3ptbzVtQVdCK0VpaWVCaG9oQU1EeVo4N3c9PQ==
+  ca.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvVENDQWVXZ0F3SUJBZ0lRUXJSRUNwVVBERFpIN2F1S0Z5enZWekFOQmdrcWhraUc5dzBCQVFzRkFEQW8KTVJJd0VBWURWUVFLRXdsVWQybHpkR3h2WTJzeEVqQVFCZ05WQkFNVENWUjNhWE4wYkc5amF6QWVGdzB5TURBNQpNekF4TWpFNE1EQmFGdzB5TXpBNU16QXhNakU0TURCYU1DZ3hFakFRQmdOVkJBb1RDVlIzYVhOMGJHOWphekVTCk1CQUdBMVVFQXhNSlZIZHBjM1JzYjJOck1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0MKQVFFQXpYTVVJMmR4RDZoNlZUZ290TStsSmtWVTdvTXdtMWNHcUxsQTF1djltbHQyZWRIa3BTaEh3VUhiSVZlVQpVTVhsTHE5K2FkdkhXeFZabzh2c2V0RS9xVnQwZU8xV3BTV29HZ2RMMUI3QktrTHFidHRIaGp6dlAyQ1VYeU5CClQ0VmVXd1Z6a1ZVM1NxUnJTYlRaTHUyR1grSmp3c3lTYkg1OUFVMkY2b3FrWENVb3RpWlBpZ0NZUU5oQ0pMRW4KNUhsU0NjUUZ6T09EY21PTmlJRTVzUHlPd256N3lJNHZxOGJZa0pGM2tPTnVvTG9qU1A3TWFYUW85NXBHZFJLcwpKRDZBUHJnMVR5WnZiT0pXVjhMUFVDRWJYSUlSR0M2b0ZFV3ZtTzZNR3NuS0xERFhyWEF6MktJZmhFZk9WeVJ2Cm11djR0WWtzRENDUmZza2lielBSeEV0Z1BRSURBUUFCb3lNd0lUQU9CZ05WSFE4QkFmOEVCQU1DQXF3d0R3WUQKVlIwVEFRSC9CQVV3QXdFQi96QU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFiakwvTVhmMkdZQ2lDdDhzUVRtWgp3THppSHFHaUI0eW9GZElMbzNNaEhJbHFpYTVZQnN0S3VVS1J6cktkWWdZUGFkOE5CVjdDbjNKbGI3Mmh4YmltCldaK3Z0QnRkNVY1TTZiemNOZlArU2ppWUgzSXlJWVh0TzlKUStxK3VxUFVzcDJMNHROaS9MZE9uYzdQNzhnY2IKU24zdkpDeGpwZE9wM2tsUUFiNFhMdnFGcWxFVXJJaXFSWnl1L0E4VTZEd3lvdnFVTUExSDRUbGY5UDhJSGRtKwpTYnlUanJkZUZTTW95RkNDc1JRSFREKzdRdmljYlZWZm5IdGc3WGZacUg3eG16cEdCcjdmbnNnQzRKMGVoeUVJCko3akpqSThvczV2SDhqUlZmaXRzdzhHcXoya0xTb0ZDcmcvU3AxaHhidVY2N3pCaXFnOFpOaXBkNktjeGhidGkKcUE9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  client-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURHakNDQWdLZ0F3SUJBZ0lRUjgwM0w4MjN2NWxGeU13b2tqZDVXVEFOQmdrcWhraUc5dzBCQVFzRkFEQW8KTVJJd0VBWURWUVFLRXdsVWQybHpkR3h2WTJzeEVqQVFCZ05WQkFNVENWUjNhWE4wYkc5amF6QWVGdzB5TURBNQpNekF4TWpFNE1EQmFGdzB5TXpBNU16QXhNakU0TURCYU1DZ3hFakFRQmdOVkJBb1RDVlIzYVhOMGJHOWphekVTCk1CQUdBMVVFQXhNSmJHOWpZV3hvYjNOME1JSUJJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0MKQVFFQXRlS2ViS09MUWxxTmxoZUgwaUtPWGY5MFRuc2d1cm1McGJkUDNiVWt4ZVJoSUNYT3RDaVNyWjIxQ2pIdQprMktJS3BYSkQrL29lRUJIK3R2WjVGK0NONnQ2UkxXVGpuelQzYm02Uk8xcVcwcHVGZHdqeGdhZkN2eFQzbk9qClRsVFAxUHZ3TytqWC9mZ3BKc253ZDRYeCsrMVVxWHBsMmRjV1oxRUFncWVudjYwMnpLUjB2K1lMLzdveWtwK3cKU0N5OWlNdUswc2JvdG9vWnoyd0tOc3lTZG1OTmFNa0Z0bkZiYitCODZ4UXJWYWxYdWYzdHZwcVJSSWJTdi9nMwozNUxGWVFjRk9JaGdrQllCODN5Ry9MVm4wY29sRWVYdlJ3UnJlM2NlbVpLR1B4UEk5N3BoaG5LcWxJY1U4T0QvCk1LK0xWVnRVelJWMitWRFFIWVpnRjNhejlRSURBUUFCbzBBd1BqQU9CZ05WSFE4QkFmOEVCQU1DQjRBd0V3WUQKVlIwbEJBd3dDZ1lJS3dZQkJRVUhBd0l3REFZRFZSMFRBUUgvQkFJd0FEQUpCZ1VxQkFFQ0J3UUFNQTBHQ1NxRwpTSWIzRFFFQkN3VUFBNElCQVFCZmEreTZZbmxUd1RmSXc2ZU4vL3dMQkNEcngzak00TzVFQ1ArQ3NuQmhtbzl4ClhrWEFDL0RpeGg1enJBSndRU2ozUFhodUtYT2RkcjZXRkN3dDRCMjV2NlVoSzdRUi8vQm94RGpZdFpDbERESlUKY2lEZjI5RzR3VWk1M29GNkFHMjJEV1lXTjBHczRnZ0x4ZGRNTWRzNGU0OTVWR3gvSmxHVmdjYytMTzlQVDl0WApCZnZpcWFlMjgvM3ArenJyQ29UZERaUW9uYWJFWU9HS0FFZk1FMTdBQ3VUYmlQa2VqbWJwYlFSZ3k1cDl1SVAxCklPdUw0Z3ZmS0dodFY2TXhFREhtRUpmNGpncGlKT2hRUExScVIwc0c3ME5hek5jZzF4NjNmL0pvUkhCdUVUU0IKM2VaMUNkQkwzRnVhR3FnaGZiZHI5bXFmdVlZTFY3YnpvTmp4OTNNZAotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+  client-key.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpQcm9jLVR5cGU6IDQsRU5DUllQVEVECkRFSy1JbmZvOiBBRVMtMjU2LUNCQyxiNGViNGNiMDZjZTU3OTBhMGU5YTk5Njc2NjIwMmJmOAoKUEdWNEh0UFIreDlJTGVYNWMwZzhxeXZLdmRZRmxPdnEyQ2s4cWtuSFY3TS9HK3ZGTkZ6WVZMV0Q2SGovT0ZuaQp6M0lNMGJWZVM2OFArTlpsN3J6SjQvK2U0NExNaDdwazFmRTJVaUVaanorWjI0QXlRWUJGS1hnbHN5MjJmODR1CnFMMUtRbTVqVTVVWFpZeFhUUUZCTUp1YTlFOFlhZDhXUFpQbEN0UnlnSUJrdUx1NFdtNmlGVnJQSGNUY2kweUEKTlZLVE5iNHNZK0FCVjFDQlZGclJGbkNQcis1bTlST0tuQlRDTE5Ncnp1WHpWNDFFdEdzTVNYVTl6T1JacXRWVAplT1hBRmFJTFltMnNVNHNJZlhuNUFBM0dHQUFHeUFDK3hZNmFaV0tZUTR5RTIxVk52YTg5T1lQS2xiSU9DczQwCnhRcjgySjYxU0lzNG50OUhXVjJWNmJDbjFrSFhCc2FKenJneDZ1Vktjd212V2lFRk5mbVEwb293Vi9FL0pNMXYKTy9nUllvU3g0MEY5OVpSOGV2dkROdlBSVnRJbm5LYUtHeTVuRDdtMGdJSWRhZ3BhRGt4dXo0cGlUOXV5UC9sKwpPalpoaHpqd0RTTUxjQ1ZVbm9uU3FRWWFEMzJpZlBqOG15SW5vTDlNTTJCOGNXcEc1MHk4MitRcmRxTVh6ZHUzClE5ak43NzJ3YmF4Wlg2M1g5TXJSY0U5cnhzeDF4NXAyVjloUTZrZ2RueUFaWk1VMGR6ZWxCdjBjU1RxRFI4TVYKcHAvRXVlQmZJQzlidjZXR2ZPSG9ScDF2RWxwWmVteTBWa1dwMi9QSGxKdHVKKzN2VmZNL0FUMG1CUEE0M0MzbwpteWdWNmFHem9ETkpwNHdOeE1qYVkxVGY3NUY0VnljNm1rdUxLN3FqMFpjNW1lQ0RUeS90anlHR3pqbWQ3Wlg5ClJtN2Jka21jQ2NoQ0tia290REdLV0tzeTV2YllmR2hYTjZHL0V0NE93ZjY1bDRNbVNhbkZYZXlvaldqeEpjV3QKbEI2ZDRYN3FwdFIyZ0FQempJdDJSYmRFeDVsYmx2NW52VlJsWlVCS1VRWDBoMjI1czJ0a2cvRWk5UDdCOVNjbQpvR0lURktrcC9qLzlrZkM3ZGExQzdndlo5VVBsb0tRNS9XYU9lc21Ea1JlUTNTQ055TDFXenJlNFRheEI1Y0t6CnVHQjV1aWcwVGhkMGMwYXhUaTA0SXRWNEh0K0hoN0ZUdjJYVzJMSDdTTU9SZVkxUEpNczY5TjNzZk5heTFKem8Kc3RhRU4ya0dOdkVyY3pyY0xaNnY3OS9ra3AwV2VGMFRaekcxc1ZLd3NnQUxqTnMwQnRDcW1hb0pYdU5IWjNOTApvUnkxdnQ5TWp6aU5kUHZ0UnpVZmdWZXVtMU5aWldJSkZwcVBpRjREYzBzZjZsV2k4NG8wU1BSbytFTFNrNFU5ClJtZEI4b0lETldVUnRpVEtvcVhLUjkvUXlKSzhDZDZYbTBzeTNKUHN4bTJRelJBVU9WOXlkZHFrUTNlYk9HRWoKVHFQaG5LS3laTjF5bUVCTVZKd0NObFlUdjZmR2lNb3RwcEFrNkZYb01YRnhFNVpLQ2FOV3Q4SS9zclA1MkVpSApmQUNMTERVTHN1NWN0U1dtOUxjOGRiTHBpdS8ydHFYeFI5TEs3VHdhTTlnYVI0ZFZFQkdiMUNLalZ1d1JYMEhRClhDejM0c0ZweEYxT0VHVzVjNk1zdS9wWDRqWVVPZVBrVkhHM2MwRWN4UGpNbmRmQVFzb1Z1M1VQcjloRkdybXgKYWJicGR4c09wb3FyZWdTdHQvOVJHVVJ0U3JqQXlxRkZFdDR5UFZzNExtRDZFbWdTUFZBb3prRFZtendPRFl4QQptTTBIdmZWQ1lpN1Qzb0lDT3R4K3BSUVowbWpHazZvYi82dmluREJBTkhTVkN0bmNvMDZLUU5SMUdQOFIxYko2CmJXVCs5TTZjRC95Z3V2VkMrVytVcHJrZ2Q5VmZXckxyVXpJMFFSTnFFZlluUnMyc1Z0b1ZvbHJzYVdMSmJSZGQKMUltS3FQWFNGWUkyZFVPYXQ3dFkzUTNDOUNWUk1UZ3lKeHRyTE5ZVE15TWtuSHNmb2NKZk5zY3dGZSt6K2tmdgotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+  admission-cert.pem: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURKekNDQWcrZ0F3SUJBZ0lSQU9VTSsvM01xbk15WW9xSGhGVW1YL3d3RFFZSktvWklodmNOQVFFTEJRQXcKS0RFU01CQUdBMVVFQ2hNSlZIZHBjM1JzYjJOck1SSXdFQVlEVlFRREV3bFVkMmx6ZEd4dlkyc3dIaGNOTWpBeApNREl5TURrMU16QXdXaGNOTWpNeE1ESXlNRGsxTXpBd1dqQTFNUkl3RUFZRFZRUUtFd2xVZDJsemRHeHZZMnN4Ckh6QWRCZ05WQkFNVEZtUmxabVZ1WkdWeUxuUjNhWE4wYkc5amF5NXpkbU13Z2dFaU1BMEdDU3FHU0liM0RRRUIKQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUM5aEZEaGxJbjB1dW1CYjhEMzdhdm5LdGhJMDVBelBFdlhqY2lxTXRPeQp1ZWNOdmEyTG93N3FyZ0g5WkU4STNqQnd6Q21jSjdHM2VoYUlHdlFEcFZKVDZpNkdFZW1IdGRVYkJqb1UwTHNiCkNSNUVKMEc1T3NPTm15bU1PTHJLR1p0MlBuMitPTkRUVGVNeHBDM3UzdFJTUng1RExweXgzcjI2UmVURkZCSFEKZy9PeDVQYWtrcE02K082U0svU3RMeTR1THpONjF4SWZnbmtBWmtSM1RCbmJTUUs4RkFqa0xuMDgwaTJZdUwzQQpYbjRvazkraEFwUjZmbVR1anVFWmY3WFlwSzZodkxwK0lvVGhkMzBHaCsrekVkLzYzNjNLL3B3TUdheTVWOUpsCmFIT1Q3NGpWb0s5UUUwZ2JIVytGa3VuWklYSklTYVFyS2FZc2lQZnVVWDNiQWdNQkFBR2pQekE5TUE0R0ExVWQKRHdFQi93UUVBd0lEcURBZEJnTlZIU1VFRmpBVUJnZ3JCZ0VGQlFjREFnWUlLd1lCQlFVSEF3RXdEQVlEVlIwVApBUUgvQkFJd0FEQU5CZ2txaGtpRzl3MEJBUXNGQUFPQ0FRRUFYR2huYU5CN3QrTEdxenhFSGtPZlBXSFBaK3g4ClBTRVk1ellKRlJkMWxmcWhpUjFGR2xad1M0TWpzN3A1YzdxR3o0blk5emU3YWV1c2dEdXl6VnhxeXBEQjREa2cKVVJaeWQrcG1vSDl0RUlEZmtWbVRhNCtrUEowZy9iM3MzSXNmYmtUa3Vxcno3c1hycS9WVmF1RjZuenFwWVVZSAo5eTNqT0F6bFpUR3BXTEZiTXpQdlNrMzgwbFVzVmloVi9SVXM4TVUvN0hBQWFpTkFKNHFXbFl4VHhyVFV0WWpzCi9DYlJ0SjY0WVhabnZ5ckxGZ0p4SFVpVWtMcFdjeWhOUnlBSDNabzAyUVFsMHFNLzVMaTRCeFNwTjBGNGxmcmwKL3QySmIvUzl2MTk3dWtLUWJtOHFrY2pNcm9KVDJNZmxqL0U0Y3dzNmdzdjNESm9hTUdhbWVZU0srUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  admission-key.pem: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpQcm9jLVR5cGU6IDQsRU5DUllQVEVECkRFSy1JbmZvOiBBRVMtMjU2LUNCQyxmNDQxYjJmOWIwN2Y1YmZlNjU5YTE4ZGQ3OGQxYjcwMwoKZE1xdDQzbDIvaG9oRVlucm5VY042dVQvQlZsT3U3WjZXU0ZWMEkzSnVQcVZoRXZ3bTRreFppb0xyTWNlU0poTApKRUM4c0lHcnNEeThFbVl6TDJzUVE1VHdFVEJKU082eGk0OHpxdlZjRUxjYTAveGY1anpmaXZwSFMrN0JxZlppClEyMU1VZGNrRUhTZlEyaE5YWXVRSTRYTHExSm1SY0Rkbittd2E5bEEyeCtiam91M0FFcmMyVlNrZ3NCcFNVZGMKY3djTGxveDVaYmJ5RnZhSnlBT3ljdnRWQndTMEI2akhjbG94SHhLSHVIOW5henI4UUVwMjRNWnJVN2xZV2Z5MApWVzJqQWk5UjlQbk93STB5VEVGVVhhZVRGWXdDRWxzRVF3OE9XSzBGRW5abDdEYmVwOVhzdVEyRHg0Zm5ZNE95CmFXR1ppTGMwNmM0M3A2S2llQ2JXVDdORzM3d3hHMDZmWnoweVplYzgzWEtpSWJFbXV5WWxCRUNXMHBUQlB4QlcKakxYU0lpQnJMUGVwaCtBVkFncmhrOHcySkpXMlBvY0FHRGdpK2d1RTE5ZVV6VEpoQWdXcjcrYjJ2ckRON25FOAo3Y25JMlFvYXdJbWhETldROEwxNlBvWUFtendlTU1LMlAzSGpHeVA4MXcxZ0JQMVJ0STFjS3FYYXZ3UlVUZ29PClg5S2JLYWdlTUw5eGJIOUxnSTJDMHBWUVV2eFR4VHc1a0kzV003SGp6eWgvNmo4Q3NGd3pXdnpYK1RnZjhwNWoKOEhHd0NvK2hiS1ZEa0pzdDlKOUtBTzlmVG1UNnM4VVE3V2YwS2FNUDFYREFIRGpiNHpRempRSGlGbTBVZVZYRgoxNTF0N3hHTjJSUVdBeE9GSklRK1NQVGFRZEx1OStxUXpkL3BHZldPZkxYSmNzNjFsTzhwRnZIMDlqeFQ1bENwCnVJM3N2enJ4SGNBZDhYWnFaRUJKU04xMGlOdXJPMTBYbGJJc1JMSmEwamZ2MktFWTlpeEYzYy9FL1hUUW1PSXIKUmVRUkJ4eHZ3SURPcS9YR0RNaTVWRWxJeXlvMHZDN3BGRFhZOEhLUjlmY0V2U0VPRWRPRkRVWGUvOE9wOVU5Twpod3YzY244NmRIa045ZzlGQVFCWEpONzNZSkNpVnB5SytwdlRvWXlucGpER0FGY2lxenpqb0NoT2xZYkdhYnhqCmVEbi9vQ2dYeFQzd1BCNUFJNThGRVVYbFNHdnpBaklSeStEY2VVa2pPU1Y5Zm9Ub3I2dmlCYUI3cFlaZnJadWwKWXNrM2IrNXdQbFFjZGxSL1hnSUVacllCNFFNNzIwSGtWYVpDZmRxSlh4bnhZcmphQXJFdzd5SnRpQ3ZZMHBtVgo3MTlnQ01WMnEvcG1yTjNGc25FZGdaRFJIYmFOY1RmTzZQSWxTVzNUNkRBRHovQjFna2xJOWpxMVRTTk5HaGpBCnBBMzlKbUp0d1VxNnEvUlJ4TXp3RWlMMzVrOXlNdjNPQTJOOEdKVytMT1NESG94MndGcks0Yk5uSEs3cGo0TmEKNzlOYUdSK05UaGhkWEFnOW1URUNvSVBCR0hWRm1FRmE4dnp2enhETEswbFEwZzFuSlYyTTdvaHFleVI3Y0cxaApMRVY2Q3BuUkR1SXBBNlB1dVNjWTVUc3U2c09ocFFaeWNWN2dxaFFKN2NvcUtENmV2SDJsWnozQzByWFJmdi9GCmJhTUhqbzBReUVJWng5clJtM1BQWVdFZVhxU1NIMy8ralFJWDk5WVMwNjhTbUwyZklvV0R1T1VQTHhibFQ3dEsKN2c3eElselpzbVVCTEJOL1laZ2RmR1Rad1J6Y2RwVG56RjQxZkpVZGFLUmpaQ2I0SVM4TTZOclBYSE4xWEVMZQpCK0xPcitCeTlnQVlJVkhYVlRTNjFsOE1WNC9iSGRIaGtGWUM0U0YvVkhNeTRNVUoyU29wd0dJTXN3TUphZzFiCnhBcXJDRlplYWRQdEZSRWJzOUxwSmxiRlYrTUpxU05PWldocXUrN0p2bEZYcW03RWFxQ1p0SXRVelc1ZStvMDIKaHIyd2xzemVWK2NuaHJLRWxDYm5Zek1UVWZ5VGNvN2dCVGpWbWI3dm0rOWdaSDI4Sk9tWnEvQzJmZEYzVGx0SAotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+
+---
+apiVersion: v1
+kind: ServiceAccount # Service Account is used for managing security context constraints policies in Openshift (SCC)
+metadata:
+  name: twistlock-service
+  namespace: twistlock
+secrets:
+- name: twistlock-secrets
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: twistlock-defender-ds
+  namespace: twistlock
+spec:
+  selector:
+    matchLabels:
+      app: twistlock-defender
+  template:
+    metadata:
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/twistlock-defender: unconfined
+      labels:
+        app: twistlock-defender
+    spec:
+      serviceAccountName: twistlock-service
+      restartPolicy: Always
+      containers:
+      - name: twistlock-defender
+        image: registry-auth.twistlock.com/tw_lfupp5h4dyw1tq142zeowq9qp0og7iub/twistlock/defender:defender_20_09_345
+        volumeMounts:
+        - name: data-folder
+          mountPath: "/var/lib/twistlock"
+        - name: certificates # Setting the certificates mount after data-folder since it is nested and was overridden in CRI based GKE cluster
+          mountPath: "/var/lib/twistlock/certificates"
+        - name: docker-sock-folder
+          mountPath: "/var/run"
+        - name: passwd
+          mountPath: "/etc/passwd"
+          readOnly: true
+        - name: docker-netns
+          mountPath: "/var/run/docker/netns"
+          readOnly: true
+        - name: syslog-socket
+          mountPath: "/dev/log"
+        - name: auditd-log
+          mountPath: "/var/log/audit"
+        - name: iptables-lock
+          mountPath: "/run"
+        env:
+        - name: WS_ADDRESS
+          value: wss://console-master-lab.sdm.demo.twistlock.com:8084
+        - name: DEFENDER_TYPE
+          value: daemonset
+        - name: DEFENDER_LISTENER_TYPE
+          value: "none"
+        - name: LOG_PROD
+          value: "true"
+        - name: SYSTEMD_ENABLED
+          value: "false"
+        - name: DOCKER_CLIENT_ADDRESS
+          value: "/var/run/docker.sock"
+        - name: DEFENDER_CLUSTER_ID
+          value: "f92cd5d6-9f21-d601-9dee-6e0f99d066de"
+        - name: DEFENDER_CLUSTER
+          value: ""
+        - name: MONITOR_SERVICE_ACCOUNTS
+          value: "true"
+        - name: MONITOR_ISTIO
+          value: "false"
+        - name: COLLECT_POD_LABELS
+          value: "true"
+        - name: INSTALL_BUNDLE
+          value: "eyJzZWNyZXRzIjp7fSwiZ2xvYmFsUHJveHlPcHQiOnsiaHR0cFByb3h5IjoiIiwibm9Qcm94eSI6IiIsImNhIjoiIiwidXNlciI6IiIsInBhc3N3b3JkIjp7ImVuY3J5cHRlZCI6IiJ9fX0="
+        - name: HOST_CUSTOM_COMPLIANCE_ENABLED
+          value: "true"
+        securityContext:
+          readOnlyRootFilesystem: true
+          privileged: false
+          capabilities:
+            add:
+            - NET_ADMIN  # NET_ADMIN - Required for process monitoring
+            - SYS_ADMIN  # SYS_ADMIN - Required for filesystem monitoring
+            - SYS_PTRACE # SYS_PTRACE - Required for local audit monitoring
+            - MKNOD # A capability to create special files using mknod(2), used by docker-less registry scanning
+            - SETFCAP # A capability to set file capabilities, used by docker-less registry scanning
+        resources: # See: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#how-pods-with-resource-requests-are-scheduled
+          limits:
+            memory: "512Mi"
+          requests:
+            cpu: "256m"
+      volumes:
+      - name: certificates
+        secret:
+          secretName: twistlock-secrets
+          defaultMode: 256
+      - name: syslog-socket
+        hostPath:
+          path: "/dev/log"
+      - name: data-folder
+        hostPath:
+          path: "/var/lib/twistlock"
+      - name: docker-netns
+        hostPath:
+          path: "/var/run/docker/netns"
+      - name: passwd
+        hostPath:
+          path: "/etc/passwd"
+      - name: docker-sock-folder
+        hostPath:
+          path: "/var/run"
+      - name: auditd-log
+        hostPath:
+          path: "/var/log/audit"
+      - name: iptables-lock
+        hostPath:
+          path: "/run"
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+---
+apiVersion: v1
+kind: Service # Expose the Defender as admission controller. Remark: by default, Defender will not listen on the service port
+metadata:
+  name: defender
+  namespace: twistlock
+  labels:
+    app: twistlock-defender
+spec:
+  ports:
+  - port: 443
+    targetPort: 9998
+  selector:
+    app: twistlock-defender
